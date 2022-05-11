@@ -30,17 +30,15 @@ const getNotes = () =>
     fetch('api/notes', {
         method: 'GET',
         headers: {
-            'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
     });
 
 // changed fetch from '/api/notes'
 const saveNote = (note) =>
-    fetch('api/notes', {
+fetch('api/notes', {
         method: 'POST',
         headers: {
-            'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(note),
