@@ -4,6 +4,7 @@ const app = express();
 const path = require('path')
 const fs = require('fs')
 const noteDb = require('./db/db');
+const { v4: uuidv4 } = require('uuid');
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -33,9 +34,10 @@ fs.readFile('./db/db.json', 'utf-8', (err, data) => {
         : console.log(data)
     const savedNotes = JSON.parse(data)
     app.post('/api/notes', (req, res) => {
-        const newNote = JSON.stringify(req.body);
+        const newNote = req.body;
+        newNote.id = uuidv4()
         console.log(newNote)
-        savedNotes.push(JSON.parse(newNote))
+        savedNotes.push(newNote)
         fs.writeFile('./db/db.json', JSON.stringify(savedNotes, null), (err) =>
             err 
             ? console.error(err) 
@@ -49,22 +51,3 @@ fs.readFile('./db/db.json', 'utf-8', (err, data) => {
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}`)
 })
-
-//  function createNewNote(body, notesArray) {
-//     var notesArray =  app.get('/api/notes', (req, res) => {
-//         fs.readFile('./db/db.json', function read(err, data){
-//             err 
-//             ? console.log(err)
-//             : res.json((JSON.parse(data)))
-//         })
-//     })
-//     console.log(notesArray)
-//     const newNotes = body;
-//     notesArray.push(newNotes);
-//     fs.writeFileSync(
-//         path.join(__dirname, './db/db.json'),
-//         JSON.stringify({ notesArray }, null, 2)
-//     );
-//     return newNotes;
-// }
-
