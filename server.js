@@ -3,7 +3,6 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 const path = require('path')
 const fs = require('fs')
-const noteDb = require('./db/db');
 const { v4: uuidv4 } = require('uuid');
 
 // Middleware
@@ -36,16 +35,15 @@ fs.readFile('./db/db.json', 'utf-8', (err, data) => {
     app.post('/api/notes', (req, res) => {
         const newNote = req.body;
         newNote.id = uuidv4()
-        console.log(newNote)
+
         savedNotes.push(newNote)
         fs.writeFile('./db/db.json', JSON.stringify(savedNotes, null), (err) =>
-            err 
-            ? console.error(err) 
-            : console.info('NOTE ADDED'))
-            return savedNotes
+            err
+                ? console.error(err)
+                : console.info('NOTE ADDED'))
+        return savedNotes
     })
 })
-
 
 // Listen function
 app.listen(PORT, () => {
